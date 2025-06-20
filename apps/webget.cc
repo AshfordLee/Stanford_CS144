@@ -9,8 +9,26 @@ using namespace std;
 
 void get_URL( const string& host, const string& path )
 {
-  cerr << "Function called: get_URL(" << host << ", " << path << ")\n";
-  cerr << "Warning: get_URL() has not been implemented yet.\n";
+  // cerr << "Function called: get_URL(" << host << ", " << path << ")\n";
+  // cerr << "Warning: get_URL() has not been implemented yet.\n";
+  TCPSocket sock {};
+  // 利用./util/socket.hh中已经写好的TCPSocket类初始化
+  Address addr = Address( host, "http" );
+  // 合并地址，注意Address类里面的初始化使用主机+服务来初始化
+  sock.connect( addr );
+  // 连接
+
+  std::string request = "GET " + path + " HTTP/1.1\r\n";
+  request += "Host: " + host + "\r\n";
+  request += "Connection: close\r\n";
+  request += "\r\n";
+  sock.write( request );
+
+  std::string response;
+  while ( !sock.eof() ) {
+    sock.read( response );
+    cout << response;
+  }
 }
 
 int main( int argc, char* argv[] )
