@@ -279,3 +279,8 @@ void Reassembler::store_segment( uint64_t first_index, std::string& data )
   //   unassembled_segments_[first_index]=data;
   // }
 }
+
+void Reassembler::increment_next_index()
+{
+  this->next_index_++;
+}

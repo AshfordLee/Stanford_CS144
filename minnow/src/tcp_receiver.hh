@@ -25,6 +25,8 @@ public:
   const Reader& reader() const { return reassembler_.reader(); }
   const Writer& writer() const { return reassembler_.writer(); }
 
+  bool syn_received_=false;
 private:
   Reassembler reassembler_;
+  std::optional<Wrap32> isn_{}; //初始序列号
 };
