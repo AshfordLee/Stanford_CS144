@@ -5,13 +5,16 @@
 #include "tcp_sender_message.hh"
 
 #include <functional>
+#include<list>
 
 class TCPSender
 {
 public:
   /* Construct TCP sender with given default Retransmission Timeout and possible ISN */
   TCPSender( ByteStream&& input, Wrap32 isn, uint64_t initial_RTO_ms )
-    : input_( std::move( input ) ), isn_( isn ), initial_RTO_ms_( initial_RTO_ms )
+    : input_( std::move( input ) ), isn_( isn ), initial_RTO_ms_( initial_RTO_ms ),current_RTO_ms_( initial_RTO_ms ),
+    window_size(1),bytes_in_flight(0),next_seqno(0),time_running(false),
+    consecutive_retransmissions_(0),syn_sent(false),fin_sent(false)
   {}
 
   /* Generate an empty TCPSenderMessage */
@@ -42,4 +45,24 @@ private:
   ByteStream input_;
   Wrap32 isn_;
   uint64_t initial_RTO_ms_;
+  uint64_t current_RTO_ms_;
+
+  uint64_t window_size;
+  uint64_t bytes_in_flight;
+  uint64_t next_seqno;
+  bool time_running;
+  uint64_t consecutive_retransmissions_;
+  bool syn_sent{false};
+  bool fin_sent{false};
+
+
+  struct OutstandingSegment
+  {
+    TCPSenderMessage msg;
+    uint64_t seqno;
+    uint64_t length;
+    uint64_t transmit_time;
+  };
+
+  std::list<OutstandingSegment> outstanding_segments{};
 };
