@@ -63,7 +63,13 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "semaphore": "cpp"
+        "semaphore": "cpp",
+        "regex": "cpp",
+        "bitset": "cpp",
+        "complex": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp"
     },
-    "cmake.sourceDirectory": "/root/Stanford_CS144/minnow"
+    "cmake.sourceDirectory": "/root/Stanford_CS144/minnow",
+    "git.ignoreLimitWarning": true
 }

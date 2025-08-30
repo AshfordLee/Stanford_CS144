@@ -3,10 +3,17 @@
 #include "byte_stream.hh"
 #include <map>
 
+// 重排器，把收到的段重新排序
 class Reassembler
 {
 public:
   // Construct Reassembler to write into given ByteStream.
+  // 构造函数，给出要写入的ByteStream(output)
+  // 记录未排序的段数
+  // 记录期望收到的下一个段编号
+  // 记录缓冲区当中的字节数
+  // 记录流是否结束
+  // 记录流结束的索引
   explicit Reassembler( ByteStream&& output )
     : output_( std::move( output ) )
     , unassembled_segments_()
@@ -36,13 +43,22 @@ public:
    *
    * The Reassembler should close the stream after writing the last byte.
    */
+
+  // 插入(接受)一个段
   void insert( uint64_t first_index, std::string data, bool is_last_substring );
+  // 把段存入缓冲区
   void store_segment( uint64_t first_index, std::string& data );
+  // 尝试看看缓冲区中是否有段可以合并
   void try_assemble();
+  // 推送进入output(流)
   void push_output( std::string& data );
+
+  // 注意这里实际上有两个"缓冲区"的概念，重排器自己有一个缓冲区
+  // 流有一个buffer缓冲区
 
   // How many bytes are stored in the Reassembler itself?
   // This function is for testing only; don't add extra state to support it.
+  // 下面是一些帮助函数
   uint64_t count_bytes_pending() const;
 
   // Access output stream reader
@@ -55,6 +71,7 @@ public:
   void increment_next_index();
 
 private:
+  // 流，重排器把段写入这个流
   ByteStream output_;
 
   std::map<uint64_t, std::string> unassembled_segments_;

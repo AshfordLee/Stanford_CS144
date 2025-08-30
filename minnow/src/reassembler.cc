@@ -70,12 +70,20 @@ void Reassembler::try_assemble()
       it++;
     }
 
-    if ( it != unassembled_segments_.end() && it->first <= next_index_ ) {
+    // 下面这个if说明it指向的那个段，至少是有一个东西可以接着output的
+    if ( it != unassembled_segments_.end() && it->first <= next_index_ ) 
+    {
       uint64_t offset = ( next_index_ > it->first ) ? ( next_index_ - it->first ) : 0;
+      
+      // 如果offset比这个段长度还大，说明这个段是全部都可以接着push的
+      // 理解一下这个offset的含义，next_index_是期望的下个段开始
+      // it->first是这个段开始，所以中间的offset显然是有可能被填满的
       if ( offset >= it->second.size() ) {
         bytes_pending_ -= it->second.size();
         unassembled_segments_.erase( it );
-      } else {
+      } 
+      // 如果没那么大，说明这个段只能push一部分
+      else {
         std::string data = it->second.substr( offset );
         push_output( data );
         bytes_pending_ = bytes_pending_ - it->second.size();

@@ -1,0 +1,8 @@
+/root/Stanford_CS144/Check4_Analyzing_Data/build/CMakeFiles/TODO1.dir
+/root/Stanford_CS144/Check4_Analyzing_Data/build/CMakeFiles/TODO2.dir
+/root/Stanford_CS144/Check4_Analyzing_Data/build/CMakeFiles/TODO3.dir
+/root/Stanford_CS144/Check4_Analyzing_Data/build/CMakeFiles/TODO4.dir
+/root/Stanford_CS144/Check4_Analyzing_Data/build/CMakeFiles/TODO5.dir
+/root/Stanford_CS144/Check4_Analyzing_Data/build/CMakeFiles/TODO6.dir
+/root/Stanford_CS144/Check4_Analyzing_Data/build/CMakeFiles/edit_cache.dir
+/root/Stanford_CS144/Check4_Analyzing_Data/build/CMakeFiles/rebuild_cache.dir
