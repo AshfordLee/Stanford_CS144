@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <queue>
+#include <unordered_map>
 
 // A "network interface" that connects IP (the internet layer, or network layer)
 // with Ethernet (the network access layer, or link layer).
@@ -51,6 +52,14 @@ public:
   // hop. Sending is accomplished by calling `transmit()` (a member variable) on the frame.
   void send_datagram( const InternetDatagram& dgram, const Address& next_hop );
 
+  // 如果在ARP缓存里找到了，那么就应该立马封装成互联网帧然后发送
+  void send_frame_immediately(const InternetDatagram& dgram, const EthernetAddress& dst_ethernet_address);
+
+  // 如果找不到，要发送ARP请求
+  void send_arp_request(const uint32_t target_ip);
+
+  void send_arp_reply(const uint32_t target_ip,const EthernetAddress& target_ethernet_address);
+
   // Receives an Ethernet frame and responds appropriately.
   // If type is IPv4, pushes the datagram to the datagrams_in queue.
   // If type is ARP request, learn a mapping from the "sender" fields, and send an ARP reply.
@@ -82,4 +91,30 @@ private:
 
   // Datagrams that have been received
   std::queue<InternetDatagram> datagrams_received_ {};
+
+  
+  // Arp Cache
+  struct ARPCacheEntry{
+    EthernetAddress ethernet_address;
+    uint64_t timestamp;
+
+    ARPCacheEntry() = default;
+    ARPCacheEntry(const EthernetAddress& addr, uint64_t ts) 
+    : ethernet_address(addr), timestamp(ts) {}
+  };
+
+
+
+
+
+  std::unordered_map<uint32_t, ARPCacheEntry> arp_cache_ {};
+
+  // Ip->Last Request Time
+  std::unordered_map<uint32_t,uint64_t> arp_timer_ {};
+
+  // Current Timestamp
+  uint64_t timestamp_ms_=0;
+
+  // ARP Pending Queue
+  std::unordered_map<uint32_t,std::queue<InternetDatagram>> arp_pending_queue_ {};
 };
