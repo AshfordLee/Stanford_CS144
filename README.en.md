@@ -1,6 +1,8 @@
 Stanford CS144 — Project Overview
 =================================
 
+Language: [中文](./README.md) · English
+
 This repository contains code and exercises from the Stanford CS144 networking labs (the "minnow" implementation and related checkpoints). This README provides a short overview, instructions for building and running tests, a navigational file-tree, and brief descriptions of key modules to help you get started quickly.
 
 Quick start (build & run tests)
